@@ -1,5 +1,4 @@
 # Troubleshooting Logs in SigNoz
-
 ## The Problem You Were Having
 
 Your FastAPI application was only sending **traces** to SigNoz, but not **logs**. This is a common issue because OpenTelemetry requires separate configuration for traces and logs.

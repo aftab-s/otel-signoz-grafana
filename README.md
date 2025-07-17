@@ -11,8 +11,8 @@ cd otel-signoz-grafana/fastapi-app
 
 # 2. Install and start SigNoz (if not already running)
 git clone -b develop https://github.com/SigNoz/signoz.git
-cd signoz/deploy/
-./install.sh
+cd signoz/deploy/docker
+docker compose up -d --remove-orphans
 
 # 3. Run the FastAPI demo
 PowerShell.exe -ExecutionPolicy Bypass -File run.ps1
