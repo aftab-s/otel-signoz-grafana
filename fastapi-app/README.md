@@ -105,7 +105,7 @@ Invoke-WebRequest http://localhost:8000/slow
 Invoke-WebRequest http://localhost:8000/error
 ```
 
-## Viewing Traces in SigNoz
+## Viewing Traces and Logs in SigNoz
 
 1. **Open SigNoz Dashboard**: Navigate to http://localhost:3301 (default SigNoz UI port)
 
@@ -121,6 +121,19 @@ Invoke-WebRequest http://localhost:8000/error
      - Slow traces (~2000ms)
      - Error traces (HTTP 500)
 
+4. **View Logs**:
+   - Go to the **Logs** tab
+   - Filter by service name `fastapi-demo`
+   - You should see logs with different levels:
+     - 🟢 INFO logs: "Fast endpoint called", "Root endpoint called"
+     - 🟡 WARNING logs: "Slow endpoint called - starting delay"
+     - 🔴 ERROR logs: "Error endpoint called - simulating server error"
+
+5. **Correlate Traces and Logs**:
+   - Logs and traces should share the same trace ID for correlation
+   - Click on a trace to see associated logs
+   - This helps with debugging specific requests
+
 ## Configuration Details
 
 ### OpenTelemetry Configuration
@@ -129,6 +142,8 @@ Invoke-WebRequest http://localhost:8000/error
 - **Exporter Endpoint**: `http://localhost:4318` (HTTP protocol)
 - **Protocol**: `http/protobuf`
 - **Instrumentation**: Automatic FastAPI instrumentation
+- **Traces Endpoint**: `http://localhost:4318/v1/traces`
+- **Logs Endpoint**: `http://localhost:4318/v1/logs`
 
 ### Environment Variables
 
@@ -142,10 +157,12 @@ Invoke-WebRequest http://localhost:8000/error
 ## Features
 
 - ✅ **Automatic Instrumentation**: FastAPI requests are automatically traced
+- ✅ **Comprehensive Logging**: Application logs are sent to SigNoz with trace correlation
 - ✅ **HTTP Protocol**: Uses HTTP instead of gRPC for better compatibility
 - ✅ **Error Handling**: Graceful fallback if OpenTelemetry setup fails
 - ✅ **Multiple Test Scenarios**: Different endpoints for testing various observability patterns
 - ✅ **Python 3.12 Compatible**: Tested with the latest Python version
+- ✅ **Trace-Log Correlation**: Logs are automatically correlated with traces
 - ✅ **Comprehensive Logging**: Detailed logging for setup and operation status
 
 ## Troubleshooting
