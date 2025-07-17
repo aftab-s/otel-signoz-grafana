@@ -37,33 +37,60 @@ handler = LoggingHandler(level=logging.NOTSET, logger_provider=logger_provider)
 logging.getLogger().addHandler(handler)
 ```
 
+### 3. Added Comprehensive Metrics
+
+```python
+# Configure metrics
+metric_reader = PeriodicExportingMetricReader(
+    OTLPMetricExporter(endpoint=f"{os.getenv('OTEL_EXPORTER_OTLP_ENDPOINT')}/v1/metrics"),
+    export_interval_millis=5000,
+)
+meter_provider = MeterProvider(resource=resource, metric_readers=[metric_reader])
+metrics.set_meter_provider(meter_provider)
+
+# Create metrics
+request_counter = meter.create_counter("http_requests_total")
+request_duration_histogram = meter.create_histogram("http_request_duration_seconds")
+live_users_gauge = meter.create_up_down_counter("live_users_count")
+```
+
 ## How to Verify Logs Are Working
 
 ### 1. Check Application Startup
 When you start the app, you should see:
 ```
-✅ OpenTelemetry configured successfully
-📡 Sending traces to: http://localhost:4318/v1/traces
-📝 Sending logs to: http://localhost:4318/v1/logs
+OpenTelemetry configured successfully
+Sending traces to: http://localhost:4318/v1/traces
+Sending logs to: http://localhost:4318/v1/logs
+Sending metrics to: http://localhost:4318/v1/metrics
 ```
 
 ### 2. Generate Test Traffic
 ```powershell
-# Generate different types of logs
-Invoke-WebRequest http://localhost:8000/fast    # INFO log
-Invoke-WebRequest http://localhost:8000/slow    # WARNING + INFO logs
-Invoke-WebRequest http://localhost:8000/error   # ERROR log
+# Generate different types of logs and metrics
+Invoke-WebRequest http://localhost:8000/fast    # INFO log + fast metrics
+Invoke-WebRequest http://localhost:8000/slow    # WARNING + INFO logs + slow metrics
+Invoke-WebRequest http://localhost:8000/error   # ERROR log + error metrics
+Invoke-WebRequest http://localhost:8000/metrics-demo  # Custom metrics
 ```
 
 ### 3. Check SigNoz Dashboard
 
-1. **Open SigNoz**: Go to http://localhost:3301
+1. **Open SigNoz**: Go to http://localhost:8080
 2. **Go to Logs Section**: Click on "Logs" in the left sidebar
 3. **Filter by Service**: Filter by service name "fastapi-demo"
 4. **Look for Log Levels**: You should see:
-   - 🟢 INFO logs from `/fast` endpoint
-   - 🟡 WARNING logs from `/slow` endpoint  
-   - 🔴 ERROR logs from `/error` endpoint
+   - INFO logs from `/fast` endpoint
+   - WARNING logs from `/slow` endpoint  
+   - ERROR logs from `/error` endpoint
+
+5. **Go to Metrics Section**: Click on "Metrics" or "Dashboard"
+6. **Look for Metrics**: You should see:
+   - `http_requests_total` (Counter)
+   - `http_request_duration_seconds` (Histogram)
+   - `live_users_count` (Gauge)
+   - `demo_operations_total` (Counter)
+   - `demo_active_connections` (Gauge)
 
 ### 4. Expected Log Messages
 

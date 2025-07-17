@@ -1,8 +1,16 @@
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
 
-# OpenTelemetry - specific working versions
+# OpenTelemetry - Core packages
 opentelemetry-api==1.21.0
 opentelemetry-sdk==1.21.0
+
+# OpenTelemetry - OTLP Exporters
 opentelemetry-exporter-otlp-proto-http==1.21.0
+
+# OpenTelemetry - Instrumentation
 opentelemetry-instrumentation-fastapi==0.42b0
+opentelemetry-instrumentation==0.42b0
+
+# Additional dependencies for resource detection
+opentelemetry-semantic-conventions==0.42b0
