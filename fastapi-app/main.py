@@ -1,10 +1,3 @@
-"""
-FastAPI Demo Application
-
-This is the main application file containing only business logic.
-All telemetry/observability concerns are handled by the telemetry module.
-"""
-
 from fastapi import FastAPI, HTTPException, Request
 import time
 import logging
@@ -16,19 +9,17 @@ from telemetry import setup_telemetry, record_request, create_metric, is_telemet
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Create FastAPI app
 app = FastAPI(title="FastAPI Demo", description="Simple FastAPI app with OpenTelemetry tracing")
 
-# Setup telemetry (this handles all OpenTelemetry configuration)
+# this handles all OpenTelemetry configuration
 telemetry_manager = setup_telemetry(app)
-
 
 @app.middleware("http")
 async def metrics_middleware(request: Request, call_next):
-    """Middleware to track request metrics using the telemetry module."""
+    # Middleware to track request metrics using the telemetry module
     start_time = time.time()
     
-    # Process the request
+    # process the request
     response = await call_next(request)
     
     # Calculate duration
@@ -47,41 +38,41 @@ async def metrics_middleware(request: Request, call_next):
 
 @app.get("/")
 async def root():
-    """Root endpoint"""
+    # Root endpoint
     logger.info("Root endpoint called")
     return {"message": "Hello from FastAPI with OpenTelemetry!", "service": telemetry_manager.config.service_name}
 
 
 @app.get("/fast")
 async def fast_endpoint():
-    """A quick, successful response"""
+    # fast endpoint
     logger.info("Fast endpoint called")
     return {"message": "This is a fast response", "status": "success", "endpoint": "fast"}
 
 
 @app.get("/slow")
 async def slow_endpoint():
-    """A response with a 2-second delay"""
+    # slow endpoint with 2s delay
     logger.warning("Slow endpoint called - starting delay")
-    time.sleep(2)  # 2-second delay
+    time.sleep(2)  # 2s delay
     logger.info("Slow endpoint - delay completed")
     return {"message": "This is a slow response after 2 seconds", "status": "success", "endpoint": "slow"}
 
 
 @app.get("/error")
 async def error_endpoint():
-    """Returns a 500 status code"""
+    # Error endpoint - Returns "500" status code
     logger.error("Error endpoint called - simulating server error")
     raise HTTPException(status_code=500, detail="Internal Server Error - This is a simulated error")
 
 
 @app.get("/metrics-demo")
 async def metrics_demo():
-    """Endpoint to demonstrate custom metrics"""
+    # Endpoint to demonstrate custom metrics
     logger.info("Metrics demo endpoint called")
     
     if is_telemetry_enabled():
-        # Create some custom metrics for demonstration
+        # custom metrics for demonstration
         demo_counter = create_metric(
             "demo_operations_total",
             "Total demo operations performed",
@@ -94,7 +85,7 @@ async def metrics_demo():
             "gauge"
         )
         
-        # Record some demo metrics
+        # Recording demo metrics
         if demo_counter:
             demo_counter.add(1, {"operation": "demo_call", "user_type": "demo"})
             
@@ -117,8 +108,7 @@ async def metrics_demo():
 
 
 if __name__ == "__main__":
-    print("Starting FastAPI application...")
+    print("Starting FastAPI application")
     print(f"Service: {telemetry_manager.config.service_name}")
     print(f"Traces: {telemetry_manager.config.otlp_endpoint}")
-    print("API docs: http://localhost:8000/docs")
     uvicorn.run(app, host="0.0.0.0", port=8000)

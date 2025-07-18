@@ -1,11 +1,3 @@
-"""
-OpenTelemetry telemetry configuration module.
-
-This module handles all observability setup including traces, logs, and metrics.
-It provides a clean interface for the main application to use without coupling
-the business logic to the telemetry implementation.
-"""
-
 import os
 import logging
 import time
@@ -18,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class TelemetryConfig:
-    """Configuration class for telemetry setup."""
+    # Configuration class for telemetry setup
     
     def __init__(self):
         # Set default environment variables if not set
@@ -33,7 +25,7 @@ class TelemetryConfig:
 
 
 class TelemetryManager:
-    """Manages OpenTelemetry setup and provides telemetry functionality."""
+    # Manages OpenTelemetry setup and provides telemetry functionality
     
     def __init__(self, config: TelemetryConfig):
         self.config = config
@@ -48,7 +40,7 @@ class TelemetryManager:
         self._setup_telemetry()
     
     def _setup_telemetry(self):
-        """Initialize OpenTelemetry components."""
+        # Initialize OpenTelemetry components
         try:
             from opentelemetry import trace, _logs, metrics
             from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
@@ -135,11 +127,10 @@ class TelemetryManager:
             
         except Exception as e:
             print(f"OpenTelemetry setup failed: {e}")
-            print("App will run without tracing")
             self.enabled = False
     
     def instrument_fastapi(self, app):
-        """Instrument FastAPI application with OpenTelemetry."""
+        # Instrument FastAPI application with OpenTelemetry
         if not self.enabled:
             return
         
@@ -151,7 +142,7 @@ class TelemetryManager:
             print(f"FastAPI instrumentation failed: {e}")
     
     def record_request_metrics(self, method: str, endpoint: str, status_code: int, duration: float):
-        """Record HTTP request metrics."""
+        # Record HTTP request metrics
         if not self.enabled or not self.request_counter or not self.request_duration_histogram:
             return
         
@@ -173,7 +164,7 @@ class TelemetryManager:
             self.live_users_gauge.add(live_users_count - 50)  # Simulate fluctuation around 50
     
     def create_custom_metric(self, name: str, description: str, metric_type: str = "counter", unit: str = "1"):
-        """Create a custom metric."""
+        # Creating a custom metric
         if not self.enabled or not self.meter:
             return None
         
@@ -214,15 +205,15 @@ def setup_telemetry(app) -> TelemetryManager:
 
 # Convenience functions for easy usage
 def record_request(method: str, endpoint: str, status_code: int, duration: float):
-    """Record HTTP request metrics."""
+    # Record HTTP request metrics
     get_telemetry_manager().record_request_metrics(method, endpoint, status_code, duration)
 
 
 def create_metric(name: str, description: str, metric_type: str = "counter", unit: str = "1"):
-    """Create a custom metric."""
+    # Create a custom metric.
     return get_telemetry_manager().create_custom_metric(name, description, metric_type, unit)
 
 
 def is_telemetry_enabled() -> bool:
-    """Check if telemetry is enabled."""
+    # Check if telemetry is enabled
     return get_telemetry_manager().enabled
