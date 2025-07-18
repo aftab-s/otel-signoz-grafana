@@ -170,3 +170,8 @@ curl http://localhost:8000/slow      # High latency
 curl http://localhost:8000/error     # Error handling
 curl http://localhost:8000/metrics-demo  # Custom metrics
 ```
+
+## Documentation
+
+- **[Navigation.md](./Navigation.md)**: Beginner-friendly guide to navigating SigNoz and Grafana interfaces
+```
