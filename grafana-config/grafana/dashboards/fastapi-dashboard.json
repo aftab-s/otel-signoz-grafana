@@ -1,0 +1,132 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "FastAPI Application Observability",
+    "tags": ["fastapi", "opentelemetry"],
+    "style": "dark",
+    "timezone": "",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Request Rate",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sum(rate(http_requests_total[5m]))",
+            "format": "time_series",
+            "legendFormat": "Requests/sec",
+            "datasource": {"uid": "prometheus", "type": "prometheus"}
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+        "options": {
+          "reduceOptions": {
+            "values": false,
+            "calcs": ["lastNotNull"],
+            "fields": ""
+          },
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto"
+        },
+        "pluginVersion": "10.4.2"
+      },
+      {
+        "id": 2,
+        "title": "Response Time",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
+            "format": "time_series",
+            "legendFormat": "95th percentile",
+            "datasource": {"uid": "prometheus", "type": "prometheus"}
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+        "options": {
+          "reduceOptions": {
+            "values": false,
+            "calcs": ["lastNotNull"],
+            "fields": ""
+          },
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto"
+        },
+        "pluginVersion": "10.4.2"
+      },
+      {
+        "id": 3,
+        "title": "HTTP Requests by Endpoint",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum(rate(http_requests_total[5m])) by (method, endpoint)",
+            "format": "time_series",
+            "legendFormat": "{{method}} {{endpoint}}",
+            "datasource": {"uid": "prometheus", "type": "prometheus"}
+          }
+        ],
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 8},
+        "options": {
+          "tooltip": {"mode": "multi", "sort": "none"},
+          "legend": {"displayMode": "visible", "placement": "bottom"}
+        },
+        "pluginVersion": "10.4.2"
+      },
+      {
+        "id": 4,
+        "title": "Error Rate",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum(rate(http_requests_total{status_code=~\"5..\"}[5m])) / sum(rate(http_requests_total[5m]))",
+            "format": "time_series",
+            "legendFormat": "Error Rate %",
+            "datasource": {"uid": "prometheus", "type": "prometheus"}
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+        "options": {
+          "tooltip": {"mode": "multi", "sort": "none"},
+          "legend": {"displayMode": "visible", "placement": "bottom"}
+        },
+        "pluginVersion": "10.4.2"
+      },
+      {
+        "id": 5,
+        "title": "Application Logs",
+        "type": "logs",
+        "targets": [
+          {
+            "expr": "{service_name=\"fastapi-demo\"}",
+            "refId": "A",
+            "datasource": {"uid": "loki", "type": "loki"}
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+        "options": {
+          "showTime": true,
+          "showLabels": false,
+          "showCommonLabels": false,
+          "wrapLogMessage": false,
+          "prettifyLogMessage": false,
+          "enableLogDetails": true,
+          "dedupStrategy": "none",
+          "sortOrder": "Descending"
+        },
+        "pluginVersion": "10.4.2"
+      }
+    ],
+    "time": {"from": "now-1h", "to": "now"},
+    "refresh": "5s",
+    "schemaVersion": 38,
+    "version": 0,
+    "gnetId": null
+  }
+}
