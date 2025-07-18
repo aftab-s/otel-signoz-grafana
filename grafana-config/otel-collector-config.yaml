@@ -13,6 +13,7 @@ processors:
   
   memory_limiter:
     limit_mib: 512
+    check_interval: 1s
   
   resource:
     attributes:
@@ -33,7 +34,6 @@ exporters:
   # Export logs to Loki
   loki:
     endpoint: http://loki:3100/loki/api/v1/push
-    tenant_id: "grafana"
     
   # Export traces to Tempo
   otlp/tempo:
@@ -42,34 +42,27 @@ exporters:
       insecure: true
 
   # Debug logging
-  logging:
-    loglevel: info
+  debug:
+    verbosity: detailed
 
 service:
-  telemetry:
-    logs:
-      level: info
-      encoding: json
-    metrics:
-      address: 0.0.0.0:8888
-
   pipelines:
     # Traces pipeline - send to Tempo
     traces:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
-      exporters: [otlp/tempo, logging]
+      exporters: [otlp/tempo, debug]
     
     # Metrics pipeline - send to Prometheus  
     metrics:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
-      exporters: [prometheus, logging]
+      exporters: [prometheus, debug]
     
     # Logs pipeline - send to Loki
     logs:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
-      exporters: [loki, logging]
+      exporters: [loki, debug]
 
   extensions: []
