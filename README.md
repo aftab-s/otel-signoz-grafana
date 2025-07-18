@@ -1,132 +1,172 @@
-# FastAPI OpenTelemetry SigNoz Demo
+# FastAPI Observability Stack Comparison
 
-A complete observability demonstration showing how to instrument a FastAPI application with OpenTelemetry and send traces, logs, and metrics to SigNoz.
+**A comprehensive demonstration comparing SigNoz and Grafana observability stacks with a modular FastAPI application.**
 
-## Quick Start (TL;DR)
+This project showcases a FastAPI application with **complete OpenTelemetry instrumentation** that can seamlessly switch between two observability backends without any code changes.
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/aftab-s/otel-signoz-grafana.git
-cd otel-signoz-grafana/fastapi-app
+## Prerequisites
 
-# 2. Install and start SigNoz (if not already running)
-git clone -b develop https://github.com/SigNoz/signoz.git
-cd signoz/deploy/docker
-docker compose up -d --remove-orphans
+- **Docker & Docker Compose**: For observability stacks
+- **Python 3.8+**: For FastAPI application
+- **8GB RAM**: Recommended for running both stacks
+- **Available Ports**: 3000, 4317, 4318, 8000, 8080, 9090
 
-# 3. Run the FastAPI demo
-PowerShell.exe -ExecutionPolicy Bypass -File run.ps1
+## Project Overview
 
-# 4. Generate test data
-PowerShell.exe -ExecutionPolicy Bypass -File test-telemetry.ps1
+This project demonstrates modern observability practices by implementing a FastAPI application with complete OpenTelemetry instrumentation. 
 
-# 5. View results in SigNoz
-# Open http://localhost:8080 and explore Traces, Logs, and Metrics
-```
-
-## Repository Structure
+## Project Structure
 
 ```
 otel-signoz-grafana/
-├── fastapi-app/                 # Main FastAPI application
-│   ├── app.py                   # FastAPI app with OpenTelemetry
-│   ├── requirements.txt         # Python dependencies
-│   ├── run.ps1                  # Setup and run script
-│   ├── test-telemetry.ps1       # Test data generation script
-│   ├── README.md                # Comprehensive setup guide
-│   ├── METRICS.md               # Metrics implementation details
-│   └── TROUBLESHOOTING.md       # Common issues and solutions
-└── signoz-config/               # SigNoz configuration (if needed)
+├── fastapi-app/                  # FastAPI application
+│   ├── main.py                   # Application logic
+│   ├── telemetry.py              # OpenTelemetry setup
+│   ├── requirements.txt          # Python dependencies
+│   ├── run.ps1 /.sh              # Setup scripts
+│   ├── test-telemetry.ps1/.sh    # Test scripts
+│   └── README.md                 # App-specific documentation
+├── grafana-config/               # Complete Grafana observability stack
+│   ├── docker-compose.yaml       # Grafana + Prometheus + Loki + Tempo
+│   ├── grafana/                  # Dashboards and provisioning
+│   └── *.yaml                    # Service configurations
+└── signoz-config/                # SigNoz deployment configuration
+    └── deploy/                   # Docker deployment files
 ```
 
-## What This Demo Shows
+## Quick Start
 
-This project demonstrates a complete observability setup with:
+### Option 1: SigNoz
 
-### Distributed Tracing
-- Request flow tracking
-- Performance monitoring
-- Error trace capture
-- Cross-service correlation (when extended)
+```bash
+# 1. Start SigNoz
+cd signoz-config/deploy/docker
+docker-compose up -d
 
-### Structured Logging  
-- Centralized log collection
-- Trace-log correlation
-- Different log levels (INFO, WARNING, ERROR)
-- Structured log format
+# 2. Run FastAPI application
+cd ../../../fastapi-app
 
-### Custom Metrics
-- **Counter**: `http_requests_total` - Request volume tracking
-- **Histogram**: `http_request_duration_seconds` - Latency distribution
-- **Gauge**: `live_users_count` - Live user simulation
-- **Business Metrics**: Custom counters and gauges
+# Windows:
+PowerShell.exe -ExecutionPolicy Bypass -File .\run.ps1
 
-### Real-World Endpoints
-- `/fast` - Normal operation simulation (~100ms)
-- `/slow` - High latency simulation (~2000ms)  
-- `/error` - Error handling demonstration (HTTP 500)
-- `/metrics-demo` - Custom metrics showcase
+# Linux/Mac:
+chmod +x run.sh && ./run.sh
+
+# 3. Generate test data
+# Windows:
+PowerShell.exe -ExecutionPolicy Bypass -File .\test-telemetry.ps1
+
+# Linux/Mac:
+chmod +x test-telemetry.sh && ./test-telemetry.sh
+
+# 4. View results
+# SigNoz UI: http://localhost:8080
+# Application: http://localhost:8000
+```
+
+### Option 2: Grafana Stack (For Comparison)
+
+```bash
+# 1. Start Grafana observability stack
+cd grafana-config
+docker-compose up -d
+
+# 2. Run FastAPI application (same commands as above)
+cd ../fastapi-app
+# Use same run.ps1 or run.sh commands
+
+# 3. Generate test data (same commands as above)
+# Use same test-telemetry scripts
+
+# 4. View results
+# Grafana UI: http://localhost:3000 (admin/admin)
+# Application: http://localhost:8000
+```
+
+## Backend Switching
+
+**The same FastAPI application works with both backends:**
+
+```bash
+# For Grafana stack
+cd grafana-config && docker-compose up -d
+cd ../fastapi-app && python main.py
+
+# For SigNoz stack  
+cd signoz-config/deploy/docker && docker-compose up -d
+cd ../../../fastapi-app && python main.py
+```
+
+**No code changes required!** The application automatically sends telemetry to whichever backend is running.
+
+## Observability Features
+
+### API Endpoints for Testing
+| Endpoint | Response Time | Purpose |
+|----------|---------------|---------|
+| `GET /` | Instant | Basic connectivity |
+| `GET /fast` | ~100ms | Normal operations |
+| `GET /slow` | ~2000ms | Latency testing |
+| `GET /error` | Instant | Error tracking |
+| `GET /metrics-demo` | Instant | Custom metrics |
+
+### Generated Telemetry Data
+- **Traces**: Different duration patterns for analysis
+- **Logs**: INFO, WARNING, ERROR levels with trace correlation
+- **Metrics**: Request counts, latency histograms, custom business metrics
 
 ## Technology Stack
 
-- **Application**: FastAPI (Python web framework)
-- **Instrumentation**: OpenTelemetry Python SDK
-- **Observability Platform**: SigNoz (open-source APM)
-- **Protocol**: OTLP over HTTP
-- **Deployment**: Docker (SigNoz), Local Python (FastAPI)
+### Application Layer
+- **FastAPI**: Modern Python web framework
+- **OpenTelemetry**: Vendor-neutral observability instrumentation
+- **Python 3.8+**: Compatible with modern Python versions
 
-## Detailed Documentation
+### Grafana Stack
+- **Grafana**: Visualization and dashboards
+- **Prometheus**: Metrics collection and storage
+- **Loki**: Log aggregation and querying
+- **Tempo**: Distributed tracing backend
+- **OTEL Collector**: Telemetry data pipeline
+- **Docker**: Containerized deployment
 
-For comprehensive setup instructions, troubleshooting, and advanced configuration:
+### SigNoz Stack
+- **SigNoz**: All-in-one observability platform
+- **ClickHouse**: Time-series database
+- **Docker**: Containerized deployment
 
-**[fastapi-app/README.md](./fastapi-app/README.md)** - Complete setup guide
-
-## Demo Scenarios
-
-### Scenario 1: Normal Operations
+### Cross-Platform Application Scripts
 ```bash
-curl http://localhost:8000/fast
-# Generates: Fast trace (~100ms) + INFO log + request metrics
+cd fastapi-app
+
+# Windows
+.\run.ps1                    # Setup and run application
+.\test-telemetry.ps1        # Generate test traffic
+
+# Linux/Mac
+./run.sh                    # Setup and run application  
+./test-telemetry.sh         # Generate test traffic
 ```
 
-### Scenario 2: Performance Issues
+## Testing Scenarios
+
+### Load Testing
 ```bash
-curl http://localhost:8000/slow
-# Generates: Slow trace (~2000ms) + WARNING/INFO logs + latency metrics
+# Generate realistic traffic patterns
+cd fastapi-app
+
+# Windows
+PowerShell.exe -ExecutionPolicy Bypass -File .\test-telemetry.ps1
+
+# Linux/Mac  
+./test-telemetry.sh
 ```
 
-### Scenario 3: Error Handling
+### Manual Testing
 ```bash
-curl http://localhost:8000/error
-# Generates: Error trace (500 status) + ERROR log + error metrics
+# Test different endpoints
+curl http://localhost:8000/fast      # Normal response
+curl http://localhost:8000/slow      # High latency
+curl http://localhost:8000/error     # Error handling
+curl http://localhost:8000/metrics-demo  # Custom metrics
 ```
-
-### Scenario 4: Business Metrics
-```bash
-curl http://localhost:8000/metrics-demo
-# Generates: Custom business metrics + trace + INFO log
-```
-
-## Expected Results in SigNoz
-
-After running the demo and generating test data, you should see:
-
-### Services Tab
-- Service named `fastapi-demo`
-- Request rate, error rate, and latency overview
-
-### Traces Tab  
-- Traces with different duration patterns
-- Error traces with stack traces
-- Distributed tracing spans
-
-### Logs Tab
-- Structured logs with trace correlation
-- Different log levels and messages
-- Searchable and filterable logs
-
-### Metrics Tab
-- Request volume and rate metrics
-- Latency percentile distributions  
-- Custom business metrics
-- Live user count simulation
