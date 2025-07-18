@@ -9,6 +9,17 @@
    ```bash
    python main.py
    ```
+   
+   **Or use the setup script:**
+   ```powershell
+   # Windows PowerShell:
+   PowerShell.exe -ExecutionPolicy Bypass -File .\run.ps1
+   # Or if already allowed: .\run.ps1
+   ```
+   ```bash
+   # Linux/Mac:
+   chmod +x run.sh && ./run.sh
+   ```
 
 3. **Test the endpoints:**
    ```bash
@@ -49,8 +60,14 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ## Testing
 
 **Generate test traffic:**
+```powershell
+# Windows PowerShell:
+PowerShell.exe -ExecutionPolicy Bypass -File .\test-telemetry.ps1
+# Or if already allowed: .\test-telemetry.ps1
+```
 ```bash
-.\test-telemetry.ps1  # PowerShell script
+# Linux/Mac:
+chmod +x test-telemetry.sh && ./test-telemetry.sh
 ```
 
 **Or manual testing:**
