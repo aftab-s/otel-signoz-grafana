@@ -18,6 +18,7 @@ Write-Host "Environment variables set successfully" -ForegroundColor Green
 Write-Host "Starting FastAPI application..." -ForegroundColor Green
 Write-Host "Application will be available at http://localhost:8000" -ForegroundColor Cyan
 Write-Host "API documentation: http://localhost:8000/docs" -ForegroundColor Cyan
+Write-Host "Health check: http://localhost:8000/health" -ForegroundColor Cyan
 Write-Host "SigNoz UI: http://localhost:8080" -ForegroundColor Cyan
 
-python app.py
+python main.py
