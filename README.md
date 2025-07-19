@@ -15,6 +15,12 @@ This project showcases a FastAPI application with **complete OpenTelemetry instr
 
 This project demonstrates modern observability practices by implementing a FastAPI application with complete OpenTelemetry instrumentation. 
 
+## Demo Videos
+
+| SigNoz | Grafana |
+|-------------|--------------|
+| 🎥 [**Watch SigNoz Demo**](https://drive.google.com/file/d/1WJF-EsMRLip3iqa79NBHyjZw-uzA2imD/view?usp=sharing)<br>*Navigating SigNoz for this project* | 🎥 [**Watch Grafana Demo**](https://drive.google.com/file/d/1bm940MBtyqH2A9FC5dxhgy3AG-2Wj-Dm/view?usp=sharing)<br>*Navigating Grafana Stack for this project* |
+
 ## Project Structure
 
 ```
