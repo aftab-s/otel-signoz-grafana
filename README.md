@@ -45,7 +45,7 @@ otel-signoz-grafana/
 cd signoz-config/deploy/docker
 docker-compose up -d
 
-# 2. Run FastAPI application
+# 2. Run FastAPI application (assuming you are in signoz-config/deploy/docker directory)
 cd ../../../fastapi-app
 
 # Windows:
