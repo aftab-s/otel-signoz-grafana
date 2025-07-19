@@ -38,6 +38,8 @@ otel-signoz-grafana/
 
 ### Option 1: SigNoz
 
+- **[Navigation.md](./Navigation.md)**: Beginner-friendly guide to navigating SigNoz and Grafana interfaces
+
 ```bash
 # 1. Start SigNoz
 cd signoz-config/deploy/docker
