@@ -176,4 +176,5 @@ curl http://localhost:8000/metrics-demo  # Custom metrics
 ## Documentation
 
 - **[Navigation.md](./Navigation.md)**: Beginner-friendly guide to navigating SigNoz and Grafana interfaces
+- **[Internal Strategy Memo : SigNoz vs. Grafana Stack](https://docs.google.com/document/d/1SpcPD3XoHWwqCjcA2Mg-yedPRkBPtJ9y4llgNwwEc-g/edit?usp=sharing)**: Task 2
 ```
