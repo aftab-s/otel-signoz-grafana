@@ -62,7 +62,7 @@ SigNoz provides an all-in-one observability interface with everything in a singl
   - `live_users_count`: Simulated user count (10-100)
   - `demo_operations_total`: Business operation counter
 
-![SigNoz - Dashboard](<Image Comparisons\SigNoz\SigNoz Dashboard.png>)
+![Image Comparisons/SigNoz/SigNoz Dashboard](<Image Comparisons/SigNoz/SigNoz Dashboard.png>)
 
 ### 5. **Alerts Tab**
 **What it shows**: Alert rules and notifications (if configured)
