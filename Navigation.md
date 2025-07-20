@@ -17,38 +17,52 @@ After running the FastAPI application and generating test data, you'll see:
 
 SigNoz provides an all-in-one observability interface with everything in a single dashboard.
 
+![SigNoz - Welcome](<Image Comparisons/SigNoz/SigNoz - Welcome.png>)
+
 ### 1. **Services Tab** (Landing Page)
 **What it shows**: Overview of all monitored applications
-- Look for: `fastapi-demo` service
-- Key metrics: Request rate, error rate, average latency
-- **What to click**: Service name to drill into details
 
 ### 2. **Traces Tab**
 **What it shows**: Individual request traces with timing breakdowns
+<br> </br>
+![SigNoz - Trace Explorer](<Image Comparisons/SigNoz/SigNoz - Trace Explorer.png>)
+
 - **Filter by**: Service name (`fastapi-demo`)
 - **Look for**:
   - Fast traces: ~100ms duration (from `/fast` endpoint)
   - Slow traces: ~2000ms duration (from `/slow` endpoint)  
   - Error traces: 500 status code (from `/error` endpoint)
 - **What to click**: Any trace to see detailed span breakdown
+<br> </br>
+
+![SigNoz - Trace Explorer](<Image Comparisons/SigNoz/SigNoz - Trace Details.png>)
 
 ### 3. **Logs Tab**
 **What it shows**: Application logs with searchable text
+<br> </br>
+![SigNoz - Logs Explorer](<Image Comparisons/SigNoz/SigNoz - Logs Explorer.png>)
+
 - **Filter by**: Service name (`fastapi-demo`)
 - **Look for**:
   - `INFO` logs: "Fast endpoint called", "Root endpoint called"
   - `WARNING` logs: "Slow endpoint called - starting delay"
   - `ERROR` logs: "Error endpoint called - simulating server error"
-- **Key feature**: Click trace IDs in logs to jump to corresponding traces
+- **Key feature**: Click trace IDs in logs to jump to corresponding traces 
+
+![SigNoz - Logs Details](<Image Comparisons/SigNoz/SigNoz - Logs Details.png>)
 
 ### 4. **Metrics Tab**
 **What it shows**: Time-series metrics and custom dashboards
+
+![SigNoz - Metrics Explorer](<Image Comparisons/SigNoz/SigNoz - Metrics Explorer.png>)
 - **Default metrics**:
   - `http_requests_total`: Request volume by endpoint
   - `http_request_duration_seconds`: Latency percentiles
 - **Custom metrics**:
   - `live_users_count`: Simulated user count (10-100)
   - `demo_operations_total`: Business operation counter
+
+![SigNoz - Dashboard](<Image Comparisons\SigNoz\SigNoz Dashboard.png>)
 
 ### 5. **Alerts Tab**
 **What it shows**: Alert rules and notifications (if configured)
@@ -64,6 +78,9 @@ Grafana uses separate tools for different data types, requiring navigation betwe
 - **Username**: `admin`
 - **Password**: `admin`
 - You'll be prompted to change the password (can skip for demo)
+<br></br>
+
+![Grafana - Welcome](<Image Comparisons/Grafana/Grafana - Welcome.png>)
 
 ### 1. **Home Dashboard**
 **What it shows**: Welcome screen and recent dashboards
@@ -73,12 +90,18 @@ Grafana uses separate tools for different data types, requiring navigation betwe
 **What it shows**: Query interface for different data sources
 
 #### **For Traces (Tempo)**
+
+![Grafana - Trace Explorer](<Image Comparisons\Grafana\Grafana - Trace Explorer.png>)
+
 - **Data source**: Select "Tempo"
 - **Query type**: "Search" or "TraceQL"
 - **Look for**: 
   - Service: `fastapi-demo`
   - Different trace durations
 - **What to click**: Trace IDs to see detailed flame graphs
+<br></br>
+
+![Grafana - Trace Details](<Image Comparisons\Grafana\Grafana - Trace Details.png>)
 
 #### **For Logs (Loki)**
 - **Data source**: Select "Loki"
@@ -88,6 +111,8 @@ Grafana uses separate tools for different data types, requiring navigation betwe
   - Trace correlation fields
 - **Key feature**: Click trace IDs to switch to Tempo
 
+![Grafana - Log Explorer](<Image Comparisons\Grafana\Grafana - Logs Explorer.png>)
+
 #### **For Metrics (Prometheus)**
 - **Data source**: Select "Prometheus"
 - **Common queries**:
@@ -95,8 +120,10 @@ Grafana uses separate tools for different data types, requiring navigation betwe
   - `histogram_quantile(0.95, http_request_duration_seconds)`: 95th percentile latency
   - `live_users_count`: Current user simulation
 
+![Grafana - Metrics Explorer](<Image Comparisons\Grafana\Grafana - Metrics Explorer.png>)
+
 ### 3. **Dashboards** (📊 icon in sidebar)
-**What it shows**: Pre-built visualization dashboards
+**What it shows**: Visualization dashboards
 - **General**: Browse available dashboards
 - **Import**: Load dashboard JSON files
 - **Look for**: Custom FastAPI dashboards showing:
@@ -104,6 +131,8 @@ Grafana uses separate tools for different data types, requiring navigation betwe
   - Latency percentile charts
   - Error rate monitoring
   - Log volume over time
+
+![Grafana - Dashboard](<Image Comparisons\Grafana\Grafana Dashboard.png>)
 
 ---
 
@@ -115,17 +144,21 @@ Grafana uses separate tools for different data types, requiring navigation betwe
 1. Go to Logs → Click trace ID → See corresponding trace
 2. Go to Traces → See related logs automatically
 
+![SigNoz - Trace Correlation](<Image Comparisons\SigNoz\SigNoz - Trace Correlation.png>)
+
 **In Grafana**: Requires navigation between data sources
 1. Explore → Loki → Find log with trace ID
 2. Copy trace ID → Explore → Tempo → Paste trace ID
-3. Or use dashboard with correlated panels
+3. Or use Derived Fields
+
+![Grafana - Trace Correlation Setup](<Image Comparisons\Grafana\Grafana - Trace Correlation Setup.png>)
 
 ### Key Differences
 
 | Feature | SigNoz | Grafana |
 |---------|---------|---------|
 | **Navigation** | Single interface | Multiple data sources |
-| **Correlation** | Automatic | Manual switching |
+| **Correlation** | Automatic | Derived Fields |
 | **Setup** | Unified | Component-based |
 | **Customization** | Moderate | Extensive |
 
