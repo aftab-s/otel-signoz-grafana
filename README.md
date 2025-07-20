@@ -21,6 +21,8 @@ This project demonstrates modern observability practices by implementing a FastA
 |-------------|--------------|
 | 🎥 [**Watch SigNoz Demo**](https://drive.google.com/file/d/1WJF-EsMRLip3iqa79NBHyjZw-uzA2imD/view?usp=sharing)<br>*Navigating SigNoz for this project* | 🎥 [**Watch Grafana Demo**](https://drive.google.com/file/d/1bm940MBtyqH2A9FC5dxhgy3AG-2Wj-Dm/view?usp=sharing)<br>*Navigating Grafana Stack for this project* |
 
+> 📖 **New to observability platforms?** Check out the [**Navigation Guide**](./Navigation.md) for a beginner-friendly walkthrough of both SigNoz and Grafana interfaces.
+
 ## Project Structure
 
 ```
@@ -43,8 +45,6 @@ otel-signoz-grafana/
 ## Quick Start
 
 ### Option 1: SigNoz
-
-- **[Navigation.md](./Navigation.md)**: Beginner-friendly guide to navigating SigNoz and Grafana interfaces
 
 ```bash
 # 1. Start SigNoz
