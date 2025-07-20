@@ -80,7 +80,7 @@ Grafana uses separate tools for different data types, requiring navigation betwe
 - You'll be prompted to change the password (can skip for demo)
 <br></br>
 
-![Grafana - Welcome](<Image Comparisons/Grafana/Grafana - Welcome.png>)
+![!\[Grafana - Welcome\](<Image Comparisons/Grafana/Grafana - Welcome.png>)](<Image Comparisons/Grafana/Grafana Dashboard.png>)
 
 ### 1. **Home Dashboard**
 **What it shows**: Welcome screen and recent dashboards
@@ -91,7 +91,7 @@ Grafana uses separate tools for different data types, requiring navigation betwe
 
 #### **For Traces (Tempo)**
 
-![Grafana - Trace Explorer](<Image Comparisons\Grafana\Grafana - Trace Explorer.png>)
+![!\[Tempo\](<Image Comparisons/Grafana/Grafana - Trace Explorer.png>)](<Image Comparisons/Grafana/Grafana - Trace Explorer.png>)
 
 - **Data source**: Select "Tempo"
 - **Query type**: "Search" or "TraceQL"
@@ -101,7 +101,7 @@ Grafana uses separate tools for different data types, requiring navigation betwe
 - **What to click**: Trace IDs to see detailed flame graphs
 <br></br>
 
-![Grafana - Trace Details](<Image Comparisons\Grafana\Grafana - Trace Details.png>)
+![!\[Tempo Details\](<Image Comparisons/Grafana/Grafana - Trace Details.png>)](<Image Comparisons/Grafana/Grafana - Trace Details.png>)
 
 #### **For Logs (Loki)**
 - **Data source**: Select "Loki"
@@ -111,7 +111,7 @@ Grafana uses separate tools for different data types, requiring navigation betwe
   - Trace correlation fields
 - **Key feature**: Click trace IDs to switch to Tempo
 
-![Grafana - Log Explorer](<Image Comparisons\Grafana\Grafana - Logs Explorer.png>)
+![!\[Grafana - Log Explorer\](<Image Comparisons\Grafana\Grafana - Logs Explorer.png>)](<Image Comparisons/Grafana/Grafana - Logs Explorer.png>)
 
 #### **For Metrics (Prometheus)**
 - **Data source**: Select "Prometheus"
@@ -120,7 +120,7 @@ Grafana uses separate tools for different data types, requiring navigation betwe
   - `histogram_quantile(0.95, http_request_duration_seconds)`: 95th percentile latency
   - `live_users_count`: Current user simulation
 
-![Grafana - Metrics Explorer](<Image Comparisons\Grafana\Grafana - Metrics Explorer.png>)
+![Metrics Explorer](<Image Comparisons/Grafana/Grafana - Metrics Explorer.png>)
 
 ### 3. **Dashboards** (📊 icon in sidebar)
 **What it shows**: Visualization dashboards
@@ -132,7 +132,7 @@ Grafana uses separate tools for different data types, requiring navigation betwe
   - Error rate monitoring
   - Log volume over time
 
-![Grafana - Dashboard](<Image Comparisons\Grafana\Grafana Dashboard.png>)
+![Grafana Dashboard](<Image Comparisons/Grafana/Grafana Dashboard.png>)
 
 ---
 
@@ -142,16 +142,18 @@ Grafana uses separate tools for different data types, requiring navigation betwe
 
 **In SigNoz**: Everything is integrated
 1. Go to Logs → Click trace ID → See corresponding trace
+
+![Trace Correlation](<Image Comparisons/SigNoz/SigNoz - Trace Correlation.png>)
 2. Go to Traces → See related logs automatically
 
-![SigNoz - Trace Correlation](<Image Comparisons\SigNoz\SigNoz - Trace Correlation.png>)
+![Linked Logs](<Image Comparisons/SigNoz/SigNoz - Trace Correlation [Linked Logs].png>)
 
 **In Grafana**: Requires navigation between data sources
 1. Explore → Loki → Find log with trace ID
 2. Copy trace ID → Explore → Tempo → Paste trace ID
 3. Or use Derived Fields
 
-![Grafana - Trace Correlation Setup](<Image Comparisons\Grafana\Grafana - Trace Correlation Setup.png>)
+![Derived Fields](<Image Comparisons/Grafana/Grafana - Trace Correlation Setup.png>)
 
 ### Key Differences
 
